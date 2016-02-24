@@ -1,0 +1,11 @@
+c:\users\administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\bin\Debug\SustainableCambodiaETL.exe.config
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\bin\Debug\SustainableCambodiaETL.exe
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\bin\Debug\SustainableCambodiaETL.pdb
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.Properties.Resources.resources
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.csproj.GenerateResource.Cache
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.exe
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.pdb
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\obj\Debug\SustainableCambodiaETL.Form1.resources
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\documents\visual studio 2015\Projects\SustainableCambodiaETL\SustainableCambodiaETL\bin\Debug\Newtonsoft.Json.xml
