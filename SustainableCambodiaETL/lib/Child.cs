@@ -24,6 +24,8 @@ namespace SustainableCambodiaETL.lib
         public bool eligibleSchoolSponsor;
         public bool eligibleScholarshipSponsor;
         public bool legacySponsored;
+        public string primaryPhoto;
+        public string additionalPhotos;
 
 
         public Child() { }
