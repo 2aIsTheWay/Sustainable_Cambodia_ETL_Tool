@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using SustainableCambodiaETL.lib;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace SustainableCambodiaETL
 {
@@ -33,26 +34,37 @@ namespace SustainableCambodiaETL
         {
             string connectionString = "Server= localhost; Database= SCambodia;Integrated Security = SSPI;";
             string sql = @"SELECT
-                            ID,
-                            LastName,
-                            FirstName,
-                            Sponsored,
-                            Gender,
-                            DOB,Biography,
-                            DateCreated,
-                            DateUpdated,
-                            EligibleHomeSponsor,
-                            EligibleSchoolSponsor,
-                            EligibleScholarshipSponsor,
-                            BiographyUpdated,
-                            Deleted
+                            c.ID,
+                            c.LastName,
+                            c.FirstName,
+							(SELECT CONCAT(p.ID,p.Extension) 
+								FROM sqlSCambodia.tblPhotos p
+								INNER JOIN sqlSCambodia.tblChildPhotos cp on cp.PhotoID = p.ID
+								WHERE cp.ChildID = c.ID and cp.PrimaryChildPhoto=1) AS PrimaryPhoto,";
+            sql += "       '['+STUFF((SELECT CONCAT(',','{\"altPhoto\":\"',p.ID,p.Extension,'\"}')";
+            sql += @"           FROM sqlSCambodia.tblPhotos p
+								INNER JOIN sqlSCambodia.tblChildPhotos cp on cp.PhotoID = p.ID
+								WHERE cp.ChildID = c.ID and cp.PrimaryChildPhoto=0 FOR XML PATH('')),1,1,'')+']' AS AdditionalPhotos,
+                            c.Sponsored,
+                            c.Gender,
+                            c.DOB,c.Biography,
+							c.ChildPhotoID,
+                            c.DateCreated,
+                            c.DateUpdated,
+                            c.EligibleHomeSponsor,
+                            c.EligibleSchoolSponsor,
+                            c.EligibleScholarshipSponsor,
+                            c.BiographyUpdated,
+                            c.Deleted
                         FROM
-                            sqlSCambodia.tblChildren
+                            sqlSCambodia.tblChildren c
                         WHERE
 	                        Deleted = 0 
-	                        AND (EligibleHomeSponsor = 1
-	                        OR EligibleHomeSponsor = 1
-	                        OR EligibleSchoolSponsor = 1);
+	                        AND (c.EligibleHomeSponsor = 1
+	                        OR c.EligibleScholarshipSponsor = 1
+	                        OR c.EligibleSchoolSponsor = 1)
+						ORDER BY
+							c.DateCreated DESC;
             ";
             SqlConnection connection = new SqlConnection(connectionString);
             try
@@ -82,7 +94,7 @@ namespace SustainableCambodiaETL
                 child.firstName = dr["FirstName"].ToString();
                 child.lastName = dr["LastName"].ToString();
                 child.gender = dr["Gender"].ToString();
-                child.biography = dr["Biography"].ToString();
+                child.biography = Regex.Replace(dr["Biography"].ToString(), "<.*?>", String.Empty);
                 child.legacySponsored = Boolean.Parse(dr["Sponsored"].ToString());
                 child.dob = DateTime.Parse(dr["DOB"].ToString());
                 child.dateCreated = DateTime.Parse(dr["DateCreated"].ToString());
@@ -92,16 +104,21 @@ namespace SustainableCambodiaETL
                 child.eligibleHomeSponsor = Boolean.Parse(dr["EligibleHomeSponsor"].ToString());
                 child.eligibleScholarshipSponsor = Boolean.Parse(dr["EligibleScholarshipSponsor"].ToString());
                 child.eligibleSchoolSponsor = Boolean.Parse(dr["EligibleSchoolSponsor"].ToString());
+                child.primaryPhoto = dr["PrimaryPhoto"].ToString();
+                child.additionalPhotos = dr["AdditionalPhotos"].ToString();
                 children.Add(child);
             }
             JsonSerializer serializer = new JsonSerializer();
             if (saveFileDialog1.FileName != null)
             {
+                Cursor = Cursors.WaitCursor;
                 using (StreamWriter sw = new StreamWriter(saveFileDialog1.FileName))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
                     serializer.Serialize(writer, children);
                 }
+                Cursor = Cursors.Default;
+                MessageBox.Show("File exported.");
 
             }
             
